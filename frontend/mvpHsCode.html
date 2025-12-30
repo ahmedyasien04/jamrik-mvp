@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>JAMRIK</title>
+        <link rel="stylesheet" href="style.css"/>
+    </head>
+    <body >
+    <!--Header-->
+        <div class="header"> 
+        <span id="headerTitle">JAMRIK</span>
+        <div style="display: flex;justify-content: space-between">
+        <img id="headIcon" src="icons/headicon.png">
+        <p id="myAccount">My Account</p>
+        </div>
+    </div>
+
+    <!--HS Code Page Content-->
+   <div style="padding-left: 16px;">
+    <div>
+        <p id="hsSubTitle">HS Code Classification Assistant</p>
+        <p id="hsUnderSubtitle">AI-powered tool to help you find the correct HS code for your goods</p>
+    </div>
+
+    <!--What is HS Code Section-->
+    <div id="whatsHsBox">
+        <img  style="width: 32px; height: 32px; margin-left: 10px;"src="icons/lamp.png" alt="Tips Icon"/>
+        <p id="whatIsHsTitle">What is an HS Code?<br/>
+        <span id="whatIsHsContent" style="outline: none; position: relative; width: 100%;">The Harmonized System (HS) Code is an internationally standardized system of names and numbers used to classify traded
+             products. It's essential for customs declarations, determining duties and taxes, and ensuring compliance with international
+              trade regulations. Each product is assigned a unique code that helps identify it across borders.</span>
+             </p>
+    </div>
+
+    <!--Describe Product Section-->
+   <div id="describeProductBox">
+        <div>
+            <p id="describeProductTitle">Describe Your Product</p>
+            <p id="describeProductSubtitle">Provide detailed information about your product to find the most accurate HS code classification.</p>
+        </div>
+
+        <div>
+            <label id="productName" for="productNameBox">Product Name</label>
+            <input type="text" id="productNameBox" name="productName" placeholder="e.g., Wireless Bluetooth Headphones" >
+        </div>
+
+        <div>
+            <label id="productDescription" for="productDescriptionBox">Detailed Description</label>
+            <textarea id="productDescriptionBox" name="productDescription" placeholder="Include material composition, intended use, technical specifications, and any other relevant details..." ></textarea>
+        </div>
+
+        <form id="hsSearchForm" action="/api/classify" method="POST">
+        <div id="findHsCodeBox">
+            <div style="display: flex; align-items:center; justify-content: flex-start;width: 200px; height: 50px; margin-left: -15%;margin-top: -3%;">
+            <img src="icons/searchicon.png" style="width: 16px; height: 16px; margin-left: 35px; "/>
+            <p id="findHsCodeButton">Find HS Code</p>
+            </div>
+        </div>
+        </form>
+      </div>
+
+ </div>
+    </body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">    
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>JAMRIK</title>
+        <link rel="stylesheet" href="style.css"/>
+        <script src="nav.js" defer></script>
+        <script type="text/javascript" src="validation.js" defer></script>
+    </head>    
+    <body> 
+        <!--Logo header-->
+        <div id="header"> 
+        <img src="logo/finalLogo4.png"/>
+        <div style="height: 75px;">
+        <p id="title">JAMRIK</p>
+        <p id="underTitle">Automated Paper-Processing</p>
+        </div>
+    </div>
+
+    <!--Log in box -->
+    <form id="Form" novalidate action="http://localhost:8080/login" method="POST" >
+    <div id="whiteBox">
+        <div>
+            <p id="subTitle">Welcome back</p>
+            <p id="underSubtitle">Enter your credentials to access your account</p>
+        </div>
+
+        <p id="errorMessages"></p>
+        <div id="logInPage">
+            <label id="email" for="emailBox">Email Address</label>
+            <div style=" outline: none; position: relative; width: 100%;">
+                <img src="icons/mailicon.png" style="width:24px; height:24px; position: absolute; top: 47%; transform: translateY(-50%); left: 8px;"/>
+                <input type="email" id="emailBox" name="email" placeholder="Mohammed12ahmad@gmail.com">
+            </div>
+        
+            <label id="password" for="passwordBox">Password</label>
+            <div style=" outline: none; position: relative; width: 100%;">
+                <img src="icons/lockicon.png" style="width:24px; height:24px; position: absolute; top: 47%; transform: translateY(-50%); left: 8px;"/>
+                <input type="password" id="passwordBox" name="password" placeholder="Enter your password">
+                <img id="eyeIcon" src="icons/eyeOff.png" style="width: 24px; height: 24px; position: absolute; top: 47%; transform: translateY(-50%); right: 35px; cursor: pointer;" />
+
+            </div>
+
+            
+
+            <div>
+                <p id="forgotPassword">Forgot Password?</p>
+            </div>
+        </div>
+
+        <!--Sign In button-->
+        <!--onclick="locToHsPage()"-->
+        <button id="signInBox" type="submit">
+            <img src="icons/signInIcon.png" style="width: 24px; height: 24px; margin-left: -110px; margin-bottom: 0px;"/>
+            <p id="signInButton">Sign In</p>
+        </button>
+
+        <hr id="hr"/>
+
+        <!--Sign up link-->
+        <div style="display: flex; justify-content: center;">
+        <p id="noAccount">Don’t have an account? 
+        <a onclick="locToSignUp()" style="color:#1C398E;cursor: pointer;">Sign up</a></p>
+        </div>
+        
+    </div>
+  </form>
+
+
+    </body>
+</html>
