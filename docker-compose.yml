@@ -1,7 +1,7 @@
 services:
   db:
     image: postgres:15
-    container_name: jamrik
+    container_name: jamrik_db
     environment:
       POSTGRES_DB: ${DB_NAME}
       POSTGRES_USER: ${DB_USER}

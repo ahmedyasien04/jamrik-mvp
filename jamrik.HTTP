@@ -1,0 +1,18 @@
+POST http://localhost:8080/jamrik/register
+Content-Type: application/json
+
+{
+  "userName": "jamrik_tester",
+  "email": "test@example.com",
+  "password": "securePassword123",
+  "role": "USER",
+  "about": "This is a test account for my MVP."
+}
+### Login with the user you just created
+POST http://localhost:8080/jamrik/login
+Content-Type: application/json
+
+{
+  "userName": "jamrik_tester",
+  "password": "securePassword123"
+}

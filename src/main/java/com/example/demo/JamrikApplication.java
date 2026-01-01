@@ -8,6 +8,7 @@ public class JamrikApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(JamrikApplication.class, args);
+        System.out.println("Welcome to Jamrik");
 	}
 
 }
