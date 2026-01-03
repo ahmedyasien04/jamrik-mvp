@@ -18,9 +18,40 @@ form.addEventListener('submit', e => {
     errorMessages.innerText=errors.join('. ');
     errorMessages.style.color = "#d10000d3";
 }
-else{
+else {
     e.preventDefault();
-    window.location.href='mvpHsCode.html';
+
+    // 1. Prepare the data from your inputs
+    const formData = {
+        email: emailInput.value,
+        password: passwordInput.value
+    };
+    
+    // Add fullName only if it's the signup page
+    if (fullNameInput) {
+        formData.fullName = fullNameInput.value;
+    }
+
+    // 2. Send the data to the Dockerized backend
+    fetch('', { 
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+    })
+    .then(response => {
+        if (response.ok) {
+            // 3. Only move to the dashboard if the backend saves the user successfully
+            window.location.href = 'mvpHsCode.html'; 
+        } else {
+            errorMessages.innerText = "Registration failed. Email might already exist.";
+        }
+    })
+    .catch(error => {
+        console.error('Connection Error:', error);
+        errorMessages.innerText = "Cannot connect to the server. Is Docker running?";
+    });
 }
 });
 
