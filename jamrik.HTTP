@@ -16,3 +16,8 @@ Content-Type: application/json
   "userName": "jamrik_tester",
   "password": "securePassword123"
 }
+### Test HS Code for Table Salt (English)
+GET http://localhost:8080/jamrik/hs?productName=Table%20Salt&description=Iodized%20salt
+
+### Test HS Code for Table Salt (English)
+GET http://localhost:8080/jamrik/hs?productName=Apple&description=Fresh red fruit

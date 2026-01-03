@@ -1,16 +1,15 @@
 package com.example.demo;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/jamrik")
 public class JamrikController {
     private final JamrikService jamrikService;
-    public JamrikController(JamrikService jamrikService) {
+    private final JamrikAIService aiService;
+    public JamrikController(JamrikService jamrikService, JamrikAIService aiService) {
         this.jamrikService = jamrikService;
+        this.aiService = aiService;
     }
 @PostMapping("/register")
     public User register(@RequestBody User user){
@@ -23,6 +22,11 @@ public class JamrikController {
             return ResponseEntity.ok(found);
         }
            return ResponseEntity.status(401).body("Invalid username or password");
+}
+@GetMapping("/hs")
+public String getHSCode(@RequestParam String productName,
+                        @RequestParam String description){
+        return aiService.getHSCode(productName,description);
 }
 
 }
