@@ -16,7 +16,15 @@ document.getElementById('findHsCodeBox').addEventListener('click', async (e) => 
         const response = await fetch(url);
     if (response.ok) {
     const hsResult = await response.text();
-    alert("Suggested HS Code: " + hsResult);
+
+    const resultSection = document.getElementById('resultSection');
+    const productLabel = document.getElementById('resultProductLabel');
+     const codeDisplay = document.getElementById('hsCodeDisplayBox');
+
+            productLabel.innerText = `Suggested HS Code for: ${pName}`;
+            codeDisplay.innerText = hsResult;
+
+            resultSection.style.display = 'block';
 } else {
     alert("Backend error. Status: " + response.status);
 }
