@@ -7,42 +7,31 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class JamrikAIService {
+    //Autowiring via constructor injection
     private final ChatClient chatclient;
     public JamrikAIService(ChatClient.Builder builder){
         this.chatclient = builder.build();
     }
-//    public String getHSCode(String productName,String description){
-//        String SystemPrompt= """
-//        Based on the official customs website,give me the three most fitting
-//              HS Codes for the specified product, based on its description.
-//                """;
-//        String UserPrompt= """
-//                Product Name: {name}
-//                Description: {desc}
-//                """;
-//        return chatclient.prompt().system(SystemPrompt)
-//                .user(u->u.text(UserPrompt)
-//                .param("name",productName)
-//                .param("desc",description))
-//                .call().content();
-//    }
     public String getHSCode(String productName, String description) {
+        //exception handling the request to not crash in case of an internal error
         try {
          ChatResponse response = chatclient.prompt()
-         .system("You are an HS Code expert.") // Simpler system prompt
-          .user(u -> u.text("Product: {name}, Description: {desc}")
-           .param("name", productName)
-           .param("desc", description))
+        //system prompt
+         .system("""
+                 You are an HS Code expert, give me the 11 digit HS code 
+                 based on the information on the jordanian customs website,
+                 only return the correct code with no explanation""")
+      .user(u -> u.text("Product: {name}, Description: {desc}")//user request
+        .param("name", productName).param("desc", description))
            .call()
             .chatResponse();
-
-            // If Gemini blocks the answer, response will be valid but result will be empty
+       // If Gemini blocks the answer, response will be valid but result will be empty
     if (response.getResult() == null || response==null) {
       return "Gemini blocked this response. MetaData: " + response.getMetadata().toString();
             }
             return response.getResult().getOutput().getText();
         } catch (Exception e) {
-            // This will print the full error in your Docker logs
+            // This will print the full error in docker logs
             e.printStackTrace();
             return "Internal Error: " + e.getMessage();
         }

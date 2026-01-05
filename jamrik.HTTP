@@ -2,9 +2,9 @@ POST http://localhost:8080/jamrik/register
 Content-Type: application/json
 
 {
-  "userName": "jamrik_tester",
-  "email": "test@example.com",
-  "password": "securePassword123",
+  "userName": "karam",
+  "email": "karam@example.com",
+  "password": "Karam123",
   "role": "USER",
   "about": "This is a test account for my MVP."
 }
@@ -13,11 +13,14 @@ POST http://localhost:8080/jamrik/login
 Content-Type: application/json
 
 {
-  "userName": "jamrik_tester",
-  "password": "securePassword123"
+  "userName": "karam",
+  "password": "Karam123"
 }
 ### Test HS Code for Table Salt (English)
 GET http://localhost:8080/jamrik/hs?productName=Table%20Salt&description=Iodized%20salt
 
 ### Test HS Code for Table Salt (English)
 GET http://localhost:8080/jamrik/hs?productName=Apple&description=Fresh red fruit
+
+### Test HS Code for Horse (English)
+GET http://localhost:8080/jamrik/hs?productName=Horse&description=Pure Bred Horse

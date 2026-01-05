@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/jamrik")
 public class JamrikController {
+    //Autowiring the service and AI service classes via constructor injection
     private final JamrikService jamrikService;
     private final JamrikAIService aiService;
     public JamrikController(JamrikService jamrikService, JamrikAIService aiService) {
