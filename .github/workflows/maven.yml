@@ -16,18 +16,25 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # Scans for leaked API Keys/Secrets in Frontend & Backend
+      # --- FIX START: We must set up Java 21 here too! ---
+      - name: Set up JDK 21 for Scan
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+      # --- FIX END ---
+
       - name: Secret Scanning
         uses: trufflesecurity/trufflehog@main
         with:
           extra_args: --debug --only-verified
 
-      # Scans Java code for SQL Injection & Security flaws
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v3
         with:
           languages: java-kotlin
 
+      # Now this will work because JDK 21 is active
       - name: Build for Scan
         run: mvn clean compile -DskipTests
 
@@ -38,10 +45,9 @@ jobs:
   build-and-test:
     name: Functional & Sync Tests
     runs-on: ubuntu-latest
-    needs: security-scan # Only runs if security scan passes
+    needs: security-scan 
     
     services:
-      # Starts a real Postgres 15 database
       db:
         image: postgres:15
         env:
@@ -66,7 +72,6 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      # RUNS EVERYTHING: Unit tests, Database Sync tests, and Integration tests
       - name: Execute Functional Tests
         run: mvn -B verify --file pom.xml
         env:
