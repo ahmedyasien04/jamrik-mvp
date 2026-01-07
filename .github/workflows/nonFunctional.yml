@@ -22,7 +22,7 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
 
-      # Scan code for leaked secrets
+      # Scan code for leaked secrets (API Keys, Passwords)
       - name: Secret Scanning (TruffleHog)
         uses: trufflesecurity/trufflehog@main
         with:
@@ -33,14 +33,15 @@ jobs:
         with:
           languages: java-kotlin
 
-      # Build for Scan: Updated to use PostgreSQL URL
+      # Build for Scan: Provide env vars to prevent compilation errors
+      # Even if tests are skipped, Spring context might try to load properties
       - name: Build for Scan
         run: mvn clean compile -DskipTests
         env:
-          DB_URL: jdbc:postgresql://localhost:5432/${{ secrets.DB_NAME }}
-          DB_USER: ${{ secrets.DB_USER }}
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          GOOGLE_AI_API_KEY: ${{ secrets.GOOGLE_AI_API_KEY }}
+          SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/${{ secrets.DB_NAME }}
+          SPRING_DATASOURCE_USERNAME: ${{ secrets.DB_USER }}
+          SPRING_DATASOURCE_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          SPRING_AI_GOOGLE_AI_API_KEY: ${{ secrets.GOOGLE_AI_API_KEY }}
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
