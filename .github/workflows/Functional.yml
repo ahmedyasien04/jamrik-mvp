@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     
     # 1. Setup temporary PostgreSQL database for Functional Tests
-    # Matches the version and variables found in your docker-compose.yml
+    # Matches the version and variables  in our docker-compose.yml
     services:
       postgres:
         image: postgres:15
