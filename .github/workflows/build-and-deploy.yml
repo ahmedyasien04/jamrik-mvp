@@ -9,21 +9,19 @@ jobs:
     name: Build, Test & Push Docker Image
     runs-on: ubuntu-latest
     
-    # Setup temporary database for testing (Functional Requirement)
+    # 1. Setup temporary MySQL database for Functional Tests
+    # This resolves the "Connection Refused" error by providing a DB instance
     services:
-      db:
-        image: postgres:15
+      mysql:
+        image: mysql:8.0
         env:
-          POSTGRES_DB: jamrikDB
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: password
+          MYSQL_DATABASE: ${{ secrets.DB_NAME }}
+          MYSQL_USER: ${{ secrets.DB_USER }}
+          MYSQL_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          MYSQL_ROOT_PASSWORD: ${{ secrets.DB_PASSWORD }}
         ports:
-          - 5432:5432
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
       - uses: actions/checkout@v4
@@ -35,28 +33,27 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      # 1. Execute Functional Tests
+      # 2. Run Tests with Environment Variables Mapped
       - name: Run Functional Tests
         run: mvn -B verify --file pom.xml
         env:
-          SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/jamrikDB
-          SPRING_DATASOURCE_USERNAME: postgres
-          SPRING_DATASOURCE_PASSWORD: password
-          # Ensure this secret is added to GitHub Secrets
-          SPRING_AI_GOOGLE_AI_API_KEY: ${{ secrets.GOOGLE_AI_API_KEY }}
+          # Spring Boot needs these variables to connect to the service container above
+          DB_URL: jdbc:mysql://localhost:3306/${{ secrets.DB_NAME }}?allowPublicKeyRetrieval=true&useSSL=false
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          GOOGLE_AI_API_KEY: ${{ secrets.GOOGLE_AI_API_KEY }}
 
-      # 2. Login to Docker Hub
+      # 3. Login to Docker Hub
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      # 3. Build and Push Docker Image
+      # 4. Build and Push Image (Uses Docker Username from secrets dynamically)
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
-          # Replace 'your_dockerhub_username' with your actual username
-          tags: your_dockerhub_username/jamrik-backend:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/jamrik-backend:latest
