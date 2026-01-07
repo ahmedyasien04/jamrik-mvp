@@ -10,17 +10,18 @@ jobs:
     runs-on: ubuntu-latest
     
     # 1. Setup temporary PostgreSQL database for Functional Tests
+    # Matches the version and variables found in your docker-compose.yml
     services:
       postgres:
         image: postgres:15
         env:
-          # Map GitHub Secrets to Postgres Container variables
+          # Mapping GitHub Secrets to Postgres container variables
           POSTGRES_DB: ${{ secrets.DB_NAME }}
           POSTGRES_USER: ${{ secrets.DB_USER }}
           POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD }}
         ports:
           - 5432:5432
-        # Health check to ensure DB is ready before tests start
+        # Health check to ensure DB is ready before tests run
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -37,15 +38,16 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      # 2. Run Tests with Environment Variables Mapped
+      # 2. Run Functional Tests with correct Environment Variables
       - name: Run Functional Tests
         run: mvn -B verify --file pom.xml
         env:
-          # Update connection string for PostgreSQL
-          DB_URL: jdbc:postgresql://localhost:5432/${{ secrets.DB_NAME }}
-          DB_USER: ${{ secrets.DB_USER }}
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          GOOGLE_AI_API_KEY: ${{ secrets.GOOGLE_AI_API_KEY }}
+          # Spring Boot config matching your docker-compose.yml
+          # We use 'localhost' here because the DB is running as a service in the runner
+          SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/${{ secrets.DB_NAME }}
+          SPRING_DATASOURCE_USERNAME: ${{ secrets.DB_USER }}
+          SPRING_DATASOURCE_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          SPRING_AI_GOOGLE_AI_API_KEY: ${{ secrets.GOOGLE_AI_API_KEY }}
 
       # 3. Login to Docker Hub
       - name: Login to Docker Hub
@@ -54,10 +56,11 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      # 4. Build and Push Image
+      # 4. Build and Push Docker Image
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
+          # Dynamically uses the Docker Hub username from secrets
           tags: ${{ secrets.DOCKER_USERNAME }}/jamrik-backend:latest
