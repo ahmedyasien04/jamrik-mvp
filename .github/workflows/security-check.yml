@@ -12,6 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       security-events: write
+    
     steps:
       - uses: actions/checkout@v4
 
@@ -27,14 +28,20 @@ jobs:
         with:
           extra_args: --debug --only-verified
 
-      # Initialize CodeQL for static code analysis and vulnerability scanning
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@v4
+        uses: github/codeql-action/init@v3
         with:
           languages: java-kotlin
 
+      # Build step: Environment variables are mapped here to prevent
+      # "ApplicationContextLoad" failures during compilation
       - name: Build for Scan
         run: mvn clean compile -DskipTests
+        env:
+          DB_URL: jdbc:mysql://localhost:3306/${{ secrets.DB_NAME }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          GOOGLE_AI_API_KEY: ${{ secrets.GOOGLE_AI_API_KEY }}
 
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v4
+        uses: github/codeql-action/analyze@v3
