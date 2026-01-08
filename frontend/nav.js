@@ -1,9 +1,9 @@
 function locToSignUp() {
-    window.location.href = "signup.html";
+    window.location.href = "signUp.html";
 }
 function locToHsPage() {
     window.location.href = "mvpHsCode.html";
 }
 function locToLogin() {
-    window.location.href = "login.html";
+    window.location.href = "logIn.html";
 }
