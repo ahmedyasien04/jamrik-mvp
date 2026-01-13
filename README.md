@@ -48,4 +48,4 @@ Frontend (jamrik_frontend): Runs on Port 3000. Serves the UI via Nginx.
 
 Backend (jamrik_backend): Runs on Port 8080. Handles API requests and connects to Google AI.
 
-Database (jamrik_db): Runs on Port 5432. PostgreSQL database for user data persistence.
+Database (jamrik_db): Runs on Port 5432. PostgreSQL database for user data persistence..
