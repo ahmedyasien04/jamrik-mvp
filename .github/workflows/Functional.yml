@@ -63,7 +63,7 @@ jobs:
           context: .
           push: true
           # Dynamically uses the Docker Hub username from secrets
-          tags: ${{ secrets.DOCKER_USERNAME }}/jamrik-backend:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/jamrik_backend
 
 
       - name: Build and Push Frontend Image
@@ -72,4 +72,4 @@ jobs:
           context: ./frontend    
           file: ./frontend/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/jamrik-frontend:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/jamrik_frontend
